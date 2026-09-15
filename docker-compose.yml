@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  tos7-app-09-radarr:
+    image: linuxserver/radarr:5.14.0
+    container_name: tos7-app-09-radarr
+    restart: unless-stopped
+    ports:
+      - "18089:7878"
+    volumes:
+      - /Volume*/DockerAppData/tos7-app-09-radarr/config:/config
+    environment:
+      - TZ=Asia/Shanghai
+      - ADMIN_PASSWORD=P@ssw0rd_2024!
+      - API_KEY=AKIAIOSFODNN7EXAMPLE
+      - DB_CONNECTION=postgres://admin:s3cr3t@db:5432/app
+    healthcheck:
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      test: ["CMD", "curl", "-f", "http://localhost:9999/health"]
+
+x-app-meta:
+  web:
+    port: 18089
+    protocol: http
